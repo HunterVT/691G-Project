@@ -1,0 +1,17 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'Proposal.blg'
+[36] biber:342> INFO - === Tue Oct  6, 2026, 16:59:15
+[44] Biber.pm:421> INFO - Reading 'Proposal.bcf'
+[80] Biber.pm:1002> INFO - Found 3 citekeys in bib section 0
+[89] Biber.pm:4487> INFO - Processing section 0
+[94] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
+[95] bibtex.pm:1713> INFO - LaTeX decoding ...
+[97] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[128] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[128] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[128] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[128] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[132] bbl.pm:676> INFO - Writing 'Proposal.bbl' with encoding 'UTF-8'
+[134] bbl.pm:779> INFO - Output to Proposal.bbl
+[134] Biber.pm:132> WARN - legacy month field 'Jun' in entry 'Kent2002' is not an integer - this will probably not sort properly.
+[134] Biber.pm:134> INFO - WARNINGS: 1

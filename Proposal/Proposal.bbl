@@ -1,0 +1,187 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{Kent2002}{article}{}{}
+      \name{author}{7}{}{%
+        {{hash=385e63d32b8044a2dc8da2c934175ca3}{%
+           family={Kent},
+           familyi={K\bibinitperiod},
+           given={W.\bibnamedelimi J.},
+           giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=d644f14040aa62e18fd36b51c4b42486}{%
+           family={Sugnet},
+           familyi={S\bibinitperiod},
+           given={C.\bibnamedelimi W.},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=d89e0da44d4bfabebd08642d085a7019}{%
+           family={Furey},
+           familyi={F\bibinitperiod},
+           given={T.\bibnamedelimi S.},
+           giveni={T\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=4db78f78127c2a8caecf0f54993c9731}{%
+           family={Roskin},
+           familyi={R\bibinitperiod},
+           given={K.\bibnamedelimi M.},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=5c4e8fd99182844738d4b55b2b8ba4b2}{%
+           family={Pringle},
+           familyi={P\bibinitperiod},
+           given={T.\bibnamedelimi H.},
+           giveni={T\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=bbb12f13c69d1a7419acf09696aa8a6b}{%
+           family={Zahler},
+           familyi={Z\bibinitperiod},
+           given={A.\bibnamedelimi M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=734876a7f15589c62aff6fc993332455}{%
+           family={Haussler},
+           familyi={H\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{a8d61f771a64a61391250c5540c5e094}
+      \strng{fullhash}{03bc58dbe2d23b57e2ca9c7bb1a868b1}
+      \strng{fullhashraw}{03bc58dbe2d23b57e2ca9c7bb1a868b1}
+      \strng{bibnamehash}{a8d61f771a64a61391250c5540c5e094}
+      \strng{authorbibnamehash}{a8d61f771a64a61391250c5540c5e094}
+      \strng{authornamehash}{a8d61f771a64a61391250c5540c5e094}
+      \strng{authorfullhash}{03bc58dbe2d23b57e2ca9c7bb1a868b1}
+      \strng{authorfullhashraw}{03bc58dbe2d23b57e2ca9c7bb1a868b1}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Genome Research}
+      \field{month}{6}
+      \field{number}{6}
+      \field{title}{The human genome browser at {UCSC}}
+      \field{volume}{12}
+      \field{year}{2002}
+      \field{pages}{996\bibrangedash 1006}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1101/gr.229102
+      \endverb
+    \endentry
+    \entry{Miga697-707}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=a268d072bbbe12aca3fcb51298c30a3b}{%
+           family={Miga},
+           familyi={M\bibinitperiod},
+           given={Karen\bibnamedelima H.},
+           giveni={K\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=4881ece5bc16a54bc966984ce1686143}{%
+           family={Newton},
+           familyi={N\bibinitperiod},
+           given={Yulia},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=159d8aa390073ceb49140894f36210c2}{%
+           family={Jain},
+           familyi={J\bibinitperiod},
+           given={Miten},
+           giveni={M\bibinitperiod}}}%
+        {{hash=e259b5553c8d3facc80afb2d90a11745}{%
+           family={Altemose},
+           familyi={A\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=67be38daa7744a49fa9d988415e628ba}{%
+           family={Willard},
+           familyi={W\bibinitperiod},
+           given={Huntington\bibnamedelima F.},
+           giveni={H\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=c30d0f129cfe2adb6f6ee1476d64467b}{%
+           family={Kent},
+           familyi={K\bibinitperiod},
+           given={W.\bibnamedelimi James},
+           giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Genome Res.}%
+      }
+      \strng{namehash}{7c55823706fa5065fde9a36eb7b506ad}
+      \strng{fullhash}{ba6b4e9916cb2be657ee6c9f53b055ea}
+      \strng{fullhashraw}{ba6b4e9916cb2be657ee6c9f53b055ea}
+      \strng{bibnamehash}{7c55823706fa5065fde9a36eb7b506ad}
+      \strng{authorbibnamehash}{7c55823706fa5065fde9a36eb7b506ad}
+      \strng{authornamehash}{7c55823706fa5065fde9a36eb7b506ad}
+      \strng{authorfullhash}{ba6b4e9916cb2be657ee6c9f53b055ea}
+      \strng{authorfullhashraw}{ba6b4e9916cb2be657ee6c9f53b055ea}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The human genome sequence remains incomplete, with multimegabase-sized gaps representing the endogenous centromeres and other heterochromatic regions. Available sequence-based studies within these sites in the genome have demonstrated a role in centromere function and chromosome pairing, necessary to ensure proper chromosome segregation during cell division. A common genomic feature of these regions is the enrichment of long arrays of near-identical tandem repeats, known as satellite DNAs, which offer a limited number of variant sites to differentiate individual repeat copies across millions of bases. This substantial sequence homogeneity challenges available assembly strategies and, as a result, centromeric regions are omitted from ongoing genomic studies. To address this problem, we utilize monomer sequence and ordering information obtained from whole-genome shotgun reads to model two haploid human satellite arrays on chromosomes X and Y, resulting in an initial characterization of 3.83 Mb of centromeric DNA within an individual genome. To further expand the utility of each centromeric reference sequence model, we evaluate sites within the arrays for short-read mappability and chromosome specificity. Because satellite DNAs evolve in a concerted manner, we use these centromeric assemblies to assess the extent of sequence variation among 366 individuals from distinct human populations. We thus identify two satellite array variants in both X and Y centromeres, as determined by array length and sequence composition. This study provides an initial sequence characterization of a regional centromere and establishes a foundation to extend genomic characterization to these sites as well as to other repeat-rich regions within complex genomes.}
+      \field{journaltitle}{Genome Research}
+      \field{number}{4}
+      \field{title}{Centromere reference models for human chromosomes X and Y satellite arrays}
+      \field{volume}{24}
+      \field{year}{2014}
+      \field{pages}{697\bibrangedash 707}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1101/gr.159624.113
+      \endverb
+      \verb{eprint}
+      \verb http://genome.cshlp.org/content/genome/24/4/697.full.pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://genome.cshlp.org/content/genome/24/4/697
+      \endverb
+      \verb{url}
+      \verb http://genome.cshlp.org/content/genome/24/4/697
+      \endverb
+    \endentry
+    \entry{rabiner1989tutorial}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=fc5e10874f928d24803009f43a119ad9}{%
+           family={Rabiner},
+           familyi={R\bibinitperiod},
+           given={Lawrence\bibnamedelima R.},
+           giveni={L\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{fullhash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{fullhashraw}{fc5e10874f928d24803009f43a119ad9}
+      \strng{bibnamehash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{authorbibnamehash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{authornamehash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{authorfullhash}{fc5e10874f928d24803009f43a119ad9}
+      \strng{authorfullhashraw}{fc5e10874f928d24803009f43a119ad9}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the IEEE}
+      \field{number}{2}
+      \field{title}{A tutorial on hidden Markov models and selected applications in speech recognition}
+      \field{volume}{77}
+      \field{year}{1989}
+      \field{pages}{257\bibrangedash 286}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1109/5.18626
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
