@@ -14,6 +14,48 @@ enum class State {
     A_MINUS, C_MINUS, G_MINUS, D_MINUS,
 };
 
+static void print_viterbi_results(
+    const std::string& sequence,
+    const std::vector<int>& optimal_path,
+    const double final_max_score
+) {
+    constexpr std::array<char, 4> nucleotides = {
+        'A', 'C', 'G', 'T'
+    };
+
+    // Print observed sequence.
+    std::cout << "Observed sequence: ";
+    for (const char nucleotide : sequence) {
+        std::cout << nucleotide << "  ";
+    }
+    std::cout << '\n';
+
+    // Print optimal hidden state sequence.
+    std::cout << "Optimal path:      ";
+    for (const int state : optimal_path) {
+        const int nucleotide_idx = state % 4;
+        const int region_idx = state / 4;
+
+        std::cout << nucleotides[nucleotide_idx]
+                  << (region_idx == 0 ? '+' : '-')
+                  << ' ';
+    }
+    std::cout << '\n';
+
+    // Print predicted CpG island membership.
+    std::cout << "Island membership: ";
+    for (const int state : optimal_path) {
+        std::cout << (state / 4 == 0 ? '+' : '-')
+                  << "  ";
+    }
+    std::cout << '\n';
+
+    // Print probability of the optimal path.
+    std::cout << "Final probability: "
+              << std::scientific
+              << final_max_score << '\n';
+}
+
 static int nucleotide_to_idx (const char nucleotide) {
     switch (nucleotide) {
         case 'A':
@@ -120,9 +162,15 @@ int main() {
 
     }
 
-    const std::string sequence = "ATCGCGCGAT";
+    const std::string sequence =
+        "ATATATATATATATATATAT"
+        "CGCGCGCGCGCGCGCGCGCG"
+        "ATATATATATATATATATAT";
     std::vector<std::array<double, 8>> viterbi_matrix(sequence.size());
 
+    std::array<int, 8> initial_row{};
+    initial_row.fill(-1);
+    std::vector<std::array<int, 8>> traceback_matrix(sequence.size(), initial_row);
     if (sequence.empty()) {
         return 1;
     }
@@ -154,9 +202,53 @@ int main() {
             }
 
             viterbi_matrix[t][j] = emission_matrix[j][curr_nucleotide_idx] * max_score;
-            std::cout << viterbi_matrix[t][j] << std::endl;
+
+            if (viterbi_matrix[t][j] > 0) {
+                traceback_matrix[t][j] = best_predecessor;
+            }
         }
     }
+
+    double final_max_score = 0.0;
+    int final_state = -1;
+
+    for (int j = 0; j < 8; ++j) {
+        const double candidate_score = viterbi_matrix.back()[j];
+
+        if (candidate_score > final_max_score) {
+            // Update final maximum score
+            final_max_score = candidate_score;
+            // Update final state.
+            final_state = j;
+        }
+    }
+
+    if (final_state < 0 || final_state > 7) {
+        std::cerr << "No valid final state found. "
+                  << "Possible numerical underflow.\n";
+        return 1;
+    }
+
+    std::vector<int> optimal_path(sequence.size(), -1);
+    optimal_path.back() = final_state;
+    for (std::size_t t = sequence.size() - 1; t > 0; --t) {
+        // Obtain the optimal state at position t.
+        const int optimal_state = optimal_path[t];
+
+        // Look up its predecessor in traceback_matrix.
+        int predecessor = traceback_matrix[t][optimal_state];
+
+        if (predecessor < 0 || predecessor > 7) {
+            return 1;
+        }
+
+        // Store the predecessor at position t - 1
+        // in optimal_path.
+        optimal_path[t-1] = predecessor;
+
+    }
+
+    print_viterbi_results(sequence, optimal_path, final_max_score);
 
     return 0;
 }
