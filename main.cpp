@@ -4,12 +4,36 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <array>
 #include <cmath>
 #include <iomanip>
 #include <string>
 #include <limits>
+#include <optional>
+#include <algorithm>
+#include<fstream>
+#include <stdexcept>
+
+static std::string read_sequence(const std::string& filepath) {
+
+    // Open the file
+    std::ifstream file(filepath);
+    // Verify that the file opened successfully
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file");
+    }
+
+    std::string sequence;
+
+    // Read the nucleotide sequence
+    // Reading nucleotide failed
+    if (!std::getline(file, sequence) || sequence.empty()) {
+        throw std::runtime_error("Could not read nucleotide");
+    }
+
+    // Return the sequence
+    return sequence;
+}
 
 static int nucleotide_to_idx (const char nucleotide) {
     switch (nucleotide) {
@@ -169,6 +193,23 @@ static bool validate_hmm(const HMM<T>& hmm) {
     return true;
 }
 
+struct ObserveUnderflow {
+    // First position containing a subnormal candidate score
+    std::optional<std::size_t> first_subnormal_position{};
+
+    // First position where a positive multiplication rounds to zero
+    std::optional<std::size_t> first_underflow_position{};
+
+    // First position where all Viterbi scores are zero
+    std::optional<std::size_t> first_all_zero_position{};
+
+    // Total number of subnormal candidate scores
+    std::size_t subnormal_count = 0;
+
+    // Total number of multiplications that underflow to zero
+    std::size_t underflow_count = 0;
+};
+
 template <typename T>
 struct ViterbiResult {
     // Final maximum score
@@ -179,6 +220,8 @@ struct ViterbiResult {
     std::vector<int> optimal_path{};
     // Whether decoding was successful
     bool success = false;
+
+    ObserveUnderflow underflow_observations;
 };
 
 template <typename T>
@@ -216,17 +259,51 @@ static ViterbiResult<T> viterbi(
             int best_predecessor = -1;
 
             for (int i = 0; i < 8; ++i) {
-                const T candidate_score = viterbi_matrix[t-1][i] * hmm.transition_matrix[i][j];
+                const T previous_score = viterbi_matrix[t-1][i];
+                const T transition_probability = hmm.transition_matrix[i][j];
+                const T candidate_score = previous_score * transition_probability;
+
+                // Check for underflow
+                if (hmm.emission_matrix[j][curr_nucleotide_idx] > 0) {
+
+                    // First check for and detect subnormal candidate scores
+                    if (std::fpclassify(candidate_score) == FP_SUBNORMAL) {
+                        ++result.underflow_observations.subnormal_count;
+
+                        // Record first occurrence only
+                        if (!result.underflow_observations.first_subnormal_position.has_value()) {
+                            result.underflow_observations.first_subnormal_position = t;
+                        }
+                    }
+
+                    // Detect underflow to zero
+                    if (previous_score > 0 && transition_probability > 0 && std::fpclassify(candidate_score) == FP_ZERO) {
+                        ++result.underflow_observations.underflow_count;
+
+                        if (!result.underflow_observations.first_underflow_position.has_value()) {
+                            result.underflow_observations.first_underflow_position = t;
+                        }
+                    }
+                }
+
                 if (candidate_score > max_score) {
                     max_score = candidate_score;
                     best_predecessor = i;
                 }
             }
-
             viterbi_matrix[t][j] = hmm.emission_matrix[j][curr_nucleotide_idx] * max_score;
 
             if (viterbi_matrix[t][j] > 0) {
                 traceback_matrix[t][j] = best_predecessor;
+            }
+        }
+        const T row_max = *std::max_element(
+viterbi_matrix[t].begin(),
+viterbi_matrix[t].end()
+);
+        if (row_max == 0) {
+            if (!result.underflow_observations.first_all_zero_position.has_value()) {
+                result.underflow_observations.first_all_zero_position = t;
             }
         }
     }
@@ -320,7 +397,43 @@ static void print_viterbi_results(
               << result.final_score << '\n';
 }
 
+// Helper function to print underflow occurrences
+static void print_underflow_report(
+    const ObserveUnderflow& observations
+) {
+    std::cout << "First subnormal position: ";
+    if (observations.first_subnormal_position.has_value()) {
+        std::cout << observations.first_subnormal_position.value();
+    }
+    else {
+        std::cout << "None";
+    }
+    std::cout << '\n';
 
+    std::cout << "First underflow position: ";
+    if (observations.first_underflow_position.has_value()) {
+        std::cout << observations.first_underflow_position.value();
+    }
+    else {
+        std::cout << "None";
+    }
+    std::cout << '\n';
+
+    std::cout << "First all-zero position: ";
+    if (observations.first_all_zero_position.has_value()) {
+        std::cout << observations.first_all_zero_position.value();
+    }
+    else {
+        std::cout << "None";
+    }
+    std::cout << '\n';
+
+    std::cout << "Subnormal count: "
+              << observations.subnormal_count << '\n';
+
+    std::cout << "Underflow count: "
+              << observations.underflow_count << '\n';
+}
 
 int main() {
 
@@ -334,11 +447,14 @@ int main() {
         !validate_hmm(hmm_long_double)) {
         return 1;
         }
-
+/**
     const std::string sequence =
         "ATATATATATATATATATAT"
         "CGCGCGCGCGCGCGCGCGCG"
         "ATATATATATATATATATAT";
+    */
+
+    const std::string sequence(20000, 'A');
 
     const auto result_float = viterbi(hmm_float, sequence);
     const auto result_double = viterbi(hmm_double, sequence);
@@ -346,12 +462,15 @@ int main() {
 
     std::cout << "\n--- Float ---\n";
     print_viterbi_results(sequence, result_float);
+    print_underflow_report(result_float.underflow_observations);
 
     std::cout << "\n--- Double ---\n";
     print_viterbi_results(sequence, result_double);
+    print_underflow_report(result_double.underflow_observations);
 
     std::cout << "\n--- Long Double ---\n";
     print_viterbi_results(sequence, result_long_double);
+    print_underflow_report(result_long_double.underflow_observations);
 
     return 0;
 }
