@@ -28,3 +28,14 @@ The available `data_types` are `float`, `double`, and `long_double`.
 Note that the `<path_to_sequence>` argument will only take a `.txt` file, and the input sequence
 must be provided as a single line of uppercase nucleotides. If you have a FASTA file you would 
 like to convert, use `preprocess_fasta.py` with the path to your FASTA file as an argument. 
+More specifically: `preprocess_fasta.py <path_to_input_fasta> <path_to_output_txt>`
+
+## Benchmarking
+Execution time is measured internally using the C++ `chrono` library with `steady_clock` and is reported in milliseconds.
+Peak memory usage is measured using GNU time. To reproduce benchmarks, use the following: 
+```
+/usr/bin/time -v ./691G_Project ../data/hg38_chr12.txt float
+/usr/bin/time -v ./691G_Project ../data/hg38_chr12.txt double
+/usr/bin/time -v ./691G_Project ../data/hg38_chr12.txt long_double
+```
+The peak memory is reported as the `Maximum Resident Set Set Size (kbytes)` in the terminal output. 
