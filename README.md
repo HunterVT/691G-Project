@@ -22,7 +22,9 @@ make
 
 The executable is called `691G_Project`, and invoking it from the command-line
 without any argument will display usage information. 
-Use `./691G_Project <path_to_sequence> <'float', 'double', or 'long_double'>`
+Use `./691G_Project <path_to_sequence> <data_type>`
+The available `data_types` are `float`, `double`, and `long_double`.
 
-Note that the `<path_to_sequence>` argument will only take a `.txt` file. If you have a FASTA file you would 
+Note that the `<path_to_sequence>` argument will only take a `.txt` file, and the input sequence
+must be provided as a single line of uppercase nucleotides. If you have a FASTA file you would 
 like to convert, use `preprocess_fasta.py` with the path to your FASTA file as an argument. 
