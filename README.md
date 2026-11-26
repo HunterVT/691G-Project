@@ -30,6 +30,13 @@ must be provided as a single line of uppercase nucleotides. If you have a FASTA 
 like to convert, use `preprocess_fasta.py` with the path to your FASTA file as an argument. 
 More specifically: `preprocess_fasta.py <path_to_input_fasta> <path_to_output_txt>`
 
+## Dataset & Preliminary Results
+The dataset used for this project is courtesy of UCSC's genome library. As of right now, we are using a subsequence of nucleotides from
+chromosome 12 of the human reference genome (hg38) for benchmarking. We are using nucleotides 6500001-6600000, and our sequence 
+length is 100000 base pairs. This data can be found in the `data/` directory. 
+
+Preliminary results can be found in `data_processing.ipynb`.
+
 ## Benchmarking
 Execution time is measured internally using the C++ `chrono` library with `steady_clock` and is reported in milliseconds.
 Peak memory usage is measured using GNU time. To reproduce benchmarks, use the following: 
