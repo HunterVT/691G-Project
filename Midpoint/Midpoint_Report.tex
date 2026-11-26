@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage[a4paper, left=1in, top=1in, right=1in, bottom=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {../figures/} }
+\usepackage{hyperref}
+\usepackage[style=numeric]{biblatex} % Set citation/bibliography style
+\addbibresource{references.bib}
+\title{ICS 691G: An Exploration of Hidden Markov Models and Viterbi's Algorithm In Regards to Stability, Underflow, and External Memory during CpG Island Detection}
+\author{Hunter Von Tungeln,}
+\date{November 25, 2026}
+\begin{document}
+\maketitle
+\section{Progress Reflection}
+\subsection{Current Progress \& Challenges}
+For this midpoint report, a basic Hidden Markov Model and version Viterbi's algorithm in normal probability space [0,1] have been implemented and benchmarked on a short subsequence of the human reference genome. The implementation supports three data types: float, double, and long\_double to study numerical stability across different data type precisions. The current implementation is a proof-of-concept and does not contain real, empirically measured HMM parameters. Instead, this current implementation uses example ``dummy'' HMM parameters for the purposes of exploring underflow and numerical stability. The implementation benchmarks included recording at what nucleotide index the first `subnormal', `underflow-to-zero' and `all-rows-zero' occur at. \\\\
+Some definititions to be familiar with: 
+\begin{itemize}
+  \item Subnormal: a non-zero number whose magnitue is smaller than the smallest possible representable number for a given programming language, more info found here \href{https://en.wikipedia.org/wiki/Subnormal\_number}{https://en.wikipedia.org/wiki/Subnormal\_number}
+  \item Underflow: When an arbitary floating point number is too small to represent for a computer, and rounds (underflows) to 0
+  \item All-Zero-Row: First row of the Viterbi matrix where every hidden state has a score of zero, indicating failure due to numerical instability
+\end{itemize}
+The current HMM implementation includes 8 hidden states, which represent a given nucleotide (A, C, T, G) being in or out of a CpG island (represented in the program as A+, A-, C+, C-, etc). The current transition probabilities, as well as initial probabilites are examples, not reflective of empirical data. \\\\
+Our benchmarks also include the memory usage, duration, and the counts of subnormal and underflow occurrences. \\\\
+What was most challenging so far was definitely the implementation. There was not any homework for implementing an HMM or Viterbi/Baum-Welch/Forward algorithm(s), so this is a first attempt at doing so. It really tested how well I understood the mathematics behind it and how well I could translate that math into code (which sometimes took very long). 
+\subsection{Data}
+For the purposes of this project midpoint, we are using a subsequence of 100000 nucleotides from chromosome 12 of the Human Reference Genome (hg38). Specificallyy, we are using nucleotides 6500001-6600000 for our current benchmarks presented here. This subsequence is only about 0.075\% of the total number of base pairs in chromosome 12. This data is courtesy of UCSC's genome library, found here: \href{https://genome.ucsc.edu/index.html}{https://genome.ucsc.edu/index.html}
+\subsection{Next Steps: }
+My next steps are to implement two more variants of Viterbi's algorithm, one in log-space, and the other using just-in-time scaling in order to try and improve Viterbi's numerical stability. The normal approach is to just use log-space, but I am interested in performance benchmarks across all three implementations. This next portion will allow me to test if the variants use memory more efficiently. I also plan to use empirical data for the HMM for CpG island detection to make the project more reflective of improving an existing biological application. Then, we will benchmark these implementations on larger subsequences, and eventually, the whole chromosome and human genome. I will also have to implement the handling of erroneous base pairs. I expect that memory usage will scale linearly with sequence length. I will also compare execution time between different implementations, as well as investigate different storage strategies to reduce memory complexity.
+
+\section{Code Repository}
+The link to the GitHub repository for this project is here: \href{https://github.com/HunterVT/691G-Project}{https://github.com/HunterVT/691G-Project}. Specific instructions for how to run the code is presented in the README.md file in the repository. 
+
+\section{Preliminary Benchmarking and Results}
+Below are preliminary results for the probability space HMM and Viterbi Algorithm. To reiterate, we used a sequence length of 100000 base pairs. This can be reproduced by following the instructions in the GitHub README.md.
+\begin{center}
+\textbf{Table 1: Subnormal, Underflow, and Row-Zero Occurrences}
+\end{center}
+\begin{center}
+\begin{tabular}{||c c c c||} 
+ \hline
+ Data Type & first\_subnormal & first\_underflow & first\_all\_zero\_row \\ [0.5ex] 
+ \hline\hline
+ float & 55 & 67 & 71 \\ 
+ \hline
+ double & 507 & 535 & 543 \\
+ \hline
+ long\_double & 8194 & 8223 & 8229 \\
+ \hline
+\end{tabular}
+\end{center}
+\begin{center}
+\textbf{Table 2: Subnormal and Underflow Counts}
+\end{center}
+\begin{center}
+\begin{tabular}{||c c c||} 
+ \hline
+ Data Type & subnormal\_count & underflow\_count \\ [0.5ex] 
+ \hline\hline
+ float & 47 & 11 \\ 
+ \hline
+ double & 113 & 12 \\
+ \hline
+ long\_double & 121 & 13 \\
+ \hline
+\end{tabular}
+\end{center}
+\begin{center}
+\textbf{Table 3: Duration and Memory Usage of Our Implementations}
+\end{center}
+\begin{center}
+\begin{tabular}{||c c c||} 
+ \hline
+ Data Type & Duration (ms) & Peak Memory Usage (KiB) \\ [0.5ex] 
+ \hline\hline
+ float & 104.19 & 10276 \\ 
+ \hline
+ double & 95.67 & 13356 \\
+ \hline
+ long\_double & 136.63 & 19620 \\
+ \hline
+\end{tabular}
+\end{center}
+Here are some visualizations to supplement the above tables: \\
+\begin{figure}[h]
+\caption{Bar Graph of First Subnormal/Underflow/All-Zero Row Occurrence}
+\centering
+\includegraphics[scale=0.60]{underflow\_statistics.png}
+\end{figure}
+\begin{figure}[h]
+\caption{Bar Graph of Subnormal/Underflow Counts}
+\centering
+\includegraphics[scale=0.60]{underflow\_count\_statistics.png}
+\end{figure}
+\begin{figure}[h]
+\caption{Bar Graph of Execution Times}
+\centering
+\includegraphics[scale=0.60]{duration\_statistics.png}
+\end{figure}
+\begin{figure}[h]
+\caption{Bar Graph of Memory Usage}
+\centering
+\includegraphics[scale=0.60]{mem\_usage\_statistics.png}
+\end{figure}
+
+So far, these results support my first hypothesis, that underflow occurs earlier when the data type is of lower precision. However, they also demonstrate that there is a need for the log-space and just-in-time scaling implementations of the HMM/Viterbi. Execution time needs more experiments and data to be studied and quantified, and so does memory usage. These figures and the above data were generated using our proof-of-concept implementation, and, as such, require much more refinement to produce more meaningful results. 
+
+
+\end{document}
