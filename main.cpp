@@ -13,6 +13,7 @@
 #include <algorithm>
 #include<fstream>
 #include <stdexcept>
+#include <chrono>
 
 static std::string read_sequence(const std::string& filepath) {
 
@@ -435,8 +436,21 @@ static void print_underflow_report(
               << observations.underflow_count << '\n';
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <path_to_sequence> <float, double, or 'long_double'> \n";
+        return 1;
+    }
+
+    const std::string sequence = read_sequence(argv[1]);
+
+    const std::string data_type = argv[2];
+
+    if (data_type != "float" && data_type != "double" && data_type != "long_double") {
+        std::cerr << "Invalid data type: Use float, double, or long_double" << std::endl;
+        return 1;
+    }
 
     const auto hmm_float = construct_synthetic_hmm<float>();
     const auto hmm_double = construct_synthetic_hmm<double>();
@@ -454,23 +468,65 @@ int main() {
         "ATATATATATATATATATAT";
     */
 
-    const std::string sequence(20000, 'A');
+    // const std::string sequence(20000, 'A');
 
-    const auto result_float = viterbi(hmm_float, sequence);
-    const auto result_double = viterbi(hmm_double, sequence);
-    const auto result_long_double = viterbi(hmm_long_double, sequence);
+    if (data_type == "float") {
 
-    std::cout << "\n--- Float ---\n";
-    print_viterbi_results(sequence, result_float);
-    print_underflow_report(result_float.underflow_observations);
+        // Get duration and run viterbi
+        const auto float_start = std::chrono::steady_clock::now();
+        const auto result_float = viterbi(hmm_float, sequence);
+        const auto float_end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> float_duration_ms = float_end - float_start;
 
-    std::cout << "\n--- Double ---\n";
-    print_viterbi_results(sequence, result_double);
-    print_underflow_report(result_double.underflow_observations);
+        // Print results
+        std::cout << "\n--- Float ---\n";
+        std::cout << "\nInput Size: " + std::to_string(sequence.size()) + " base pairs\n";
+        print_viterbi_results(sequence, result_float);
+        print_underflow_report(result_float.underflow_observations);
+        std::cout << "Duration: " + std::to_string(float_duration_ms.count()) + "ms" << std::endl;
+    }
 
-    std::cout << "\n--- Long Double ---\n";
-    print_viterbi_results(sequence, result_long_double);
-    print_underflow_report(result_long_double.underflow_observations);
+    if (data_type == "double") {
+
+        // Get duration and run viterbi
+        const auto double_start = std::chrono::steady_clock::now();
+        const auto result_double = viterbi(hmm_double, sequence);
+        const auto double_end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> double_duration_ms = double_end - double_start;
+
+        // Print results
+        std::cout << "\n--- Double ---\n";
+        std::cout << "\nInput Size: " + std::to_string(sequence.size()) + " base pairs\n";
+        print_viterbi_results(sequence, result_double);
+        print_underflow_report(result_double.underflow_observations);
+        std::cout << "Duration: " + std::to_string(double_duration_ms.count()) + "ms" << std::endl;
+
+
+
+    }
+
+    if (data_type == "long_double") {
+
+        // Get duration and run viterbi
+        const auto long_double_start = std::chrono::steady_clock::now();
+        const auto result_long_double = viterbi(hmm_long_double, sequence);
+        const auto long_double_end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> long_double_duration_ms = long_double_end - long_double_start;
+
+        // Print results
+        std::cout << "\n--- Long Double ---\n";
+        std::cout << "\nInput Size: " + std::to_string(sequence.size()) + + " base pairs\n";
+        print_viterbi_results(sequence, result_long_double);
+        print_underflow_report(result_long_double.underflow_observations);
+        std::cout << "Duration: " + std::to_string(long_double_duration_ms.count()) + "ms" << std::endl;
+    }
+
+
+
+
+
+
+
 
     return 0;
 }

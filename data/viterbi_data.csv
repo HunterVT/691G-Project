@@ -1,0 +1,4 @@
+data_type,first_subnormal,first_underflow,first_all_zero_row,subnormal_count,underflow_count,sequence_length,execution_time_ms,maximum_rss_kb
+float,55,67,71,47,11,100000,104.19,10276
+double,507,535,543,113,12,100000,95.67,13356
+long_double,8194,8223,8229,121,13,100000,136.63,19620
