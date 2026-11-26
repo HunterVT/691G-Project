@@ -28,7 +28,7 @@ The available `data_types` are `float`, `double`, and `long_double`.
 Note that the `<path_to_sequence>` argument will only take a `.txt` file, and the input sequence
 must be provided as a single line of uppercase nucleotides. If you have a FASTA file you would 
 like to convert, use `preprocess_fasta.py` with the path to your FASTA file as an argument. 
-More specifically: `preprocess_fasta.py <path_to_input_fasta> <path_to_output_txt>`
+More specifically: `python3 preprocess_fasta.py <path_to_input_fasta> <path_to_output_txt>`
 
 ## Dataset & Preliminary Results
 The dataset used for this project is courtesy of UCSC's genome library. As of right now, we are using a subsequence of nucleotides from
